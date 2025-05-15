@@ -105,7 +105,7 @@ export default function ResumeUploader({ onUploadComplete }: ResumeUploaderProps
       setUploadProgress(100);
       
       // Call the parent component's callback with the extracted content
-      onUploadComplete(data.extractedText, file.name);
+      onUploadComplete(data.text, file.name);
       
       toast.success('Resume uploaded and parsed successfully!');
       

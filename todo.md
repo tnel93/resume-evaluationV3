@@ -9,6 +9,8 @@
 - [x] Integrate uploader into main workflow page
 - [x] Add backend API for file processing
 - [x] Implement resume text extraction
+- [x] Fix API response property name mismatch (text vs extractedText)
+- [x] Implement actual PDF/DOCX parsing with pdf-parse and mammoth
 
 ## Phase 2: ATS Analysis & Gap Report
 - [x] Create job description input field
@@ -16,12 +18,14 @@
 - [x] Build scoring system for ATS compatibility
 - [x] Design visual gap report interface
 - [x] Add actionable recommendations
+- [x] Fix workflow connection between upload and gap analysis
 
 ## Phase 3: Resume Rewriting Wizard
 - [x] Develop step-by-step wizard interface
 - [x] Integrate OpenAI methodology for content suggestions
 - [x] Create live preview of rewritten resume
 - [x] Add export functionality (PDF, DOCX)
+- [x] Implement OpenAI API integration for resume rewriting
 - [ ] Test and validate the rewriting wizard
 
 ## Phase 4: Enhanced Design & Branding

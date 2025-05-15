@@ -35,80 +35,45 @@ export default function ResumeRewriter({ resumeText, jobDescription }: ResumeRew
   const [editSection, setEditSection] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
   
-  // Mock function to simulate OpenAI API call
-  // In a real implementation, this would call the OpenAI API
+  // Function to call the OpenAI API through our backend
   const processResumeWithOpenAI = async () => {
     setIsProcessing(true);
     
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Call our backend API to process the resume with OpenAI
+      const response = await fetch('/api/rewrite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          resumeText,
+          targetAudience,
+          jobDescription
+        }),
+      });
       
-      // Mock response data
-      const mockResumeData: ResumeData = {
-        value_thesis: "Innovative software engineer with 5+ years experience delivering high-impact solutions that increase efficiency by 30%+",
-        summary: "Results-driven software engineer with expertise in full-stack development, cloud architecture, and agile methodologies. Proven track record of delivering scalable applications that drive business growth and operational efficiency.",
-        core_competencies: [
-          "Full-Stack Development",
-          "Cloud Architecture",
-          "Agile Project Management",
-          "Performance Optimization",
-          "CI/CD Implementation"
-        ],
-        experience: [
-          {
-            title: "Senior Software Engineer",
-            company: "TechCorp Inc.",
-            location: "San Francisco, CA",
-            dates: "Jan 2022 - Present",
-            bullets: [
-              "Architect and implement microservices architecture reducing system latency by 40% and increasing throughput by 25%",
-              "Lead team of 5 engineers to deliver critical features on time, resulting in 15% increase in customer satisfaction",
-              "Optimize database queries reducing load times by 60% and improving overall application performance"
-            ]
-          },
-          {
-            title: "Software Developer",
-            company: "InnovateSoft",
-            location: "Austin, TX",
-            dates: "Mar 2019 - Dec 2021",
-            bullets: [
-              "Developed RESTful APIs supporting 1M+ daily requests with 99.9% uptime",
-              "Implemented automated testing framework reducing bug rate by 35% and deployment time by 45%",
-              "Collaborated with product team to launch 3 major features generating $2M in additional revenue"
-            ]
-          }
-        ],
-        education: [
-          "M.S. Computer Science, Stanford University, 2019",
-          "B.S. Computer Engineering, University of Texas, 2017"
-        ],
-        certifications: [
-          "AWS Certified Solutions Architect",
-          "Google Cloud Professional Developer",
-          "Certified Scrum Master"
-        ],
-        technical_skills: [
-          "Languages: JavaScript, TypeScript, Python, Java",
-          "Frameworks: React, Node.js, Express, Django",
-          "Cloud: AWS, GCP, Azure",
-          "Tools: Docker, Kubernetes, Jenkins, Git"
-        ],
-        awards: [
-          "Innovation Award, TechCorp Inc., 2023",
-          "Hackathon Winner, Developer Conference, 2021"
-        ],
-        volunteer: [
-          "Code Mentor, CoderDojo, 2020-Present",
-          "Technical Advisor, Local STEM Program, 2019-2021"
-        ]
-      };
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to process resume');
+      }
       
-      setResumeData(mockResumeData);
+      const data = await response.json();
+      
+      if (!data.success || !data.data) {
+        throw new Error('Invalid response from server');
+      }
+      
+      // Set the optimized resume data
+      setResumeData(data.data);
       setStep(3);
+      
+      // Show success message
+      toast.success('Resume optimized successfully!');
+      
     } catch (error) {
       console.error('Error processing resume:', error);
-      // Handle error
+      toast.error(error instanceof Error ? error.message : 'Failed to process resume');
     } finally {
       setIsProcessing(false);
     }
