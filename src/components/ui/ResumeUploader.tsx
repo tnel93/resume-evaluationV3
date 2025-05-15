@@ -69,7 +69,7 @@ export default function ResumeUploader({ onUploadComplete }: ResumeUploaderProps
     setIsUploading(true);
     setUploadProgress(0);
     
-    // Simulate upload progress
+    // Set up progress tracking
     const interval = setInterval(() => {
       setUploadProgress(prev => {
         if (prev >= 95) {
@@ -81,35 +81,43 @@ export default function ResumeUploader({ onUploadComplete }: ResumeUploaderProps
     }, 100);
     
     try {
-      // In a real implementation, this would be an API call to upload the file
-      // For now, we'll simulate reading the file locally
-      const reader = new FileReader();
+      // Create form data for API call
+      const formData = new FormData();
+      formData.append('file', file);
       
-      reader.onload = (e) => {
-        const content = e.target?.result as string;
-        
-        // Simulate API delay
-        setTimeout(() => {
-          clearInterval(interval);
-          setUploadProgress(100);
-          
-          // Call the parent component's callback with the file content
-          onUploadComplete(content, file.name);
-          
-          toast.success('Resume uploaded successfully!');
-          
-          // Reset upload state after a delay
-          setTimeout(() => {
-            setIsUploading(false);
-          }, 1000);
-        }, 1500);
-      };
+      // Call the API to upload and parse the file
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
       
-      reader.readAsText(file);
+      // Clear the progress interval
+      clearInterval(interval);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to upload file');
+      }
+      
+      const data = await response.json();
+      
+      // Set upload as complete
+      setUploadProgress(100);
+      
+      // Call the parent component's callback with the extracted content
+      onUploadComplete(data.extractedText, file.name);
+      
+      toast.success('Resume uploaded and parsed successfully!');
+      
+      // Reset upload state after a delay
+      setTimeout(() => {
+        setIsUploading(false);
+      }, 1000);
+      
     } catch (_error) {
       clearInterval(interval);
       setUploadError('Failed to upload file. Please try again.');
-      toast.error('Upload failed. Please try again.');
+      toast.error(_error instanceof Error ? _error.message : 'Upload failed. Please try again.');
       setIsUploading(false);
     }
   };

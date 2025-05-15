@@ -7,8 +7,8 @@
 - [x] Implement file validation (PDF/DOCX, size limits)
 - [x] Add upload progress indicator
 - [x] Integrate uploader into main workflow page
-- [ ] Add backend API for file processing
-- [ ] Implement resume text extraction
+- [x] Add backend API for file processing
+- [x] Implement resume text extraction
 
 ## Phase 2: ATS Analysis & Gap Report
 - [ ] Create job description input field

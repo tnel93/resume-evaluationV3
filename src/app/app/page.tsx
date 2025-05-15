@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import ResumeUploader from '@/components/ui/ResumeUploader';
+import GapReport from '@/components/ui/GapReport';
 
 export default function MainWorkflowLayout() {
   const [showGapReport, setShowGapReport] = useState(false);
@@ -29,6 +30,12 @@ export default function MainWorkflowLayout() {
     setShowRewriteWizard(true);
     toast.success('Ready for rewriting!');
   };
+  
+  // Handle proceeding to rewriting from gap report
+  const handleProceedToRewriting = () => {
+    setShowRewriteWizard(true);
+    toast.success('Ready for rewriting!');
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -43,33 +50,17 @@ export default function MainWorkflowLayout() {
           </div>
         </div>
         
-        {/* Gap Report iframe placeholder - hidden by default */}
+        {/* Gap Report - hidden by default */}
         {showGapReport && (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">ATS & Keyword Gap Analysis</h2>
-            <div 
-              id="iframe-gap-report" 
-              className="border border-gray-300 dark:border-gray-600 rounded-lg h-[500px] flex items-center justify-center"
-            >
-              {/* TODO: This will be replaced with the actual gap report iframe */}
-              <div className="text-center">
-                <p className="text-gray-500 dark:text-gray-400 mb-4">Your resume has been analyzed against job requirements</p>
-                <div className="mb-4">
-                  <div className="flex justify-between mb-1">
-                    <span>ATS Compatibility Score</span>
-                    <span>72%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: '72%' }}></div>
-                  </div>
-                </div>
-                <button 
-                  onClick={handleGapReportComplete}
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-                >
-                  Proceed to Rewriting
-                </button>
-              </div>
+            <div id="iframe-gap-report" className="h-[500px]">
+              {_resumeContent && (
+                <GapReport 
+                  resumeText={_resumeContent} 
+                  onProceedToRewriting={handleProceedToRewriting}
+                />
+              )}
             </div>
           </div>
         )}
