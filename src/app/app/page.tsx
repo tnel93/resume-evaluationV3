@@ -7,8 +7,9 @@ import ResumeUploader from '@/components/ui/ResumeUploader';
 export default function MainWorkflowLayout() {
   const [showGapReport, setShowGapReport] = useState(false);
   const [showRewriteWizard, setShowRewriteWizard] = useState(false);
-  const [resumeContent, setResumeContent] = useState<string | null>(null);
-  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
+  // These state variables will be used in future backend integration
+  const [_resumeContent, setResumeContent] = useState<string | null>(null);
+  const [_resumeFileName, setResumeFileName] = useState<string | null>(null);
 
   // Handle resume upload completion
   const handleUploadComplete = (fileContent: string, fileName: string) => {

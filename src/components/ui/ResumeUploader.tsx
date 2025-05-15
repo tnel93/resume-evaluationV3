@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { FileText, Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { FileText, Upload, X, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface ResumeUploaderProps {
@@ -106,7 +106,7 @@ export default function ResumeUploader({ onUploadComplete }: ResumeUploaderProps
       };
       
       reader.readAsText(file);
-    } catch (error) {
+    } catch (_error) {
       clearInterval(interval);
       setUploadError('Failed to upload file. Please try again.');
       toast.error('Upload failed. Please try again.');
