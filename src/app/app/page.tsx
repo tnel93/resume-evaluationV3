@@ -2,15 +2,19 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import ResumeUploader from '@/components/ui/ResumeUploader';
 
 export default function MainWorkflowLayout() {
   const [showGapReport, setShowGapReport] = useState(false);
   const [showRewriteWizard, setShowRewriteWizard] = useState(false);
+  const [resumeContent, setResumeContent] = useState<string | null>(null);
+  const [resumeFileName, setResumeFileName] = useState<string | null>(null);
 
-  // This is a placeholder function that would be replaced with actual functionality
-  // when the backend is implemented
-  const handleUploadComplete = () => {
-    toast.success('Resume uploaded successfully!');
+  // Handle resume upload completion
+  const handleUploadComplete = (fileContent: string, fileName: string) => {
+    setResumeContent(fileContent);
+    setResumeFileName(fileName);
+    
     // Show the gap report iframe after a simulated analysis
     setTimeout(() => {
       setShowGapReport(true);
@@ -18,7 +22,7 @@ export default function MainWorkflowLayout() {
     }, 2000);
   };
 
-  // This is a placeholder function that would be replaced with actual functionality
+  // Handle gap report completion
   const handleGapReportComplete = () => {
     // Show the rewrite wizard iframe
     setShowRewriteWizard(true);
@@ -30,23 +34,11 @@ export default function MainWorkflowLayout() {
       <h1 className="text-3xl font-bold mb-8 text-center">Resume Evaluation & Rewriting</h1>
       
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* Upload iframe placeholder */}
+        {/* Upload section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold mb-4">Upload Your Resume</h2>
-          <div 
-            id="iframe-upload" 
-            className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-[300px] flex items-center justify-center"
-          >
-            {/* TODO: This will be replaced with the actual upload widget iframe */}
-            <div className="text-center">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">Drag and drop your resume file here or click to browse</p>
-              <button 
-                onClick={handleUploadComplete}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-              >
-                Simulate Upload
-              </button>
-            </div>
+          <div id="iframe-upload" className="h-[300px]">
+            <ResumeUploader onUploadComplete={handleUploadComplete} />
           </div>
         </div>
         
@@ -91,7 +83,7 @@ export default function MainWorkflowLayout() {
             >
               {/* TODO: This will be replaced with the actual rewrite wizard iframe */}
               <div className="text-center max-w-md mx-auto">
-                <p className="text-gray-500 dark:text-gray-400 mb-4">Let&apos;s optimize your resume with AI-powered suggestions</p>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">Let&apos;s optimize your resume with AI-powered suggestions</p>
                 
                 <div className="space-y-4 text-left mb-6">
                   <div>
