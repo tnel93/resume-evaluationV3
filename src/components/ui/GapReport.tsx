@@ -16,7 +16,7 @@ const commonSkills = [
   'Communication', 'Problem Solving', 'Team Leadership'
 ];
 
-export default function GapReport({ resumeText, jobDescription }: GapReportProps) {
+export default function GapReport({ resumeText, jobDescription, onProceedToRewriting }: GapReportProps) {
   const [jobDescInput, setJobDescInput] = useState(jobDescription || '');
   
   // Generate analysis based on resume text and job description
